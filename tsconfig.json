@@ -1,9 +1,0 @@
-{
-  "extends": "@react-native/typescript-config",
-  "compilerOptions": {
-    "jsx": "react-native",         // ✅ This tells TypeScript to compile JSX for React Native
-    "esModuleInterop": true        // ✅ Also needed for default imports like React
-  },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
-}

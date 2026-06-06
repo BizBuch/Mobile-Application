@@ -1,0 +1,153 @@
+import React, { useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { WelcomeNavigationProp } from '../navigation/auth-screen-navigation/AuthScreenStackParamList';
+import Logo from '../../assets/images/splash.svg';
+import { configManager } from '../../../shared/core/config';
+import { useVerifyToken } from '../../../shared/application/command/useVerifyToken';
+
+const { width } = Dimensions.get('window');
+const AnimatedLogo = Animated.createAnimatedComponent(Logo);
+
+const SplashScreen: React.FC = () => {
+  const logoScale = useRef(new Animated.Value(0.6)).current;
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+  const textTranslate = useRef(new Animated.Value(20)).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
+
+  const navigation = useNavigation<WelcomeNavigationProp>();
+
+  const { mutateAsync } = useVerifyToken();
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      // Initialize config manager to load saved IP settings
+      await configManager.initialize();
+      
+      const token = await AsyncStorage.getItem('authToken');
+
+      if (token) {
+        try {
+          await mutateAsync(
+            { token },
+            {
+              onSuccess: async (response: any) => {
+                if (response.user?.profile_photo) {
+                  await AsyncStorage.setItem('userProfilePhoto', response.user.profile_photo);
+                }
+                navigation.replace('BizBuch');
+              },
+              onError: () => {
+                navigation.replace('WelcomeScreen');
+              },
+            },
+          );
+        } catch (e) {
+          navigation.replace('WelcomeScreen');
+        }
+      } else {
+        navigation.replace('WelcomeScreen');
+      }
+    };
+
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(logoScale, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(logoOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.parallel([
+        Animated.timing(textTranslate, {
+          toValue: 0,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(textOpacity, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  }, []);
+
+  const { width } = Dimensions.get('window');
+
+  return (
+    <View style={styles.container}>
+      <Animated.View
+        style={{
+          flex: 0.9,
+          justifyContent: 'center',
+          opacity: logoOpacity,
+          transform: [{ scale: logoScale }],
+        }}
+      >
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <AnimatedLogo
+            width={width * 0.7}
+            height={width * 0.7}
+            viewBox="0 0 512 512"
+          />
+        </View>
+      </Animated.View>
+
+      <Animated.View
+        style={{
+          opacity: textOpacity,
+          transform: [{ translateY: textTranslate }],
+        }}
+      >
+        <ActivityIndicator color="#fff" style={{ margin: 30 }} />
+        <Text style={styles.title}>BizBuch</Text>
+        <Text style={styles.tagline}>Connecting Ideas & People</Text>
+      </Animated.View>
+    </View>
+  );
+};
+
+export default SplashScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#E65100',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    width: width * 0.8,
+    height: width * 0.8,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  tagline: {
+    fontSize: 14,
+    color: '#fff',
+    marginTop: 6,
+    textAlign: 'center',
+  },
+});

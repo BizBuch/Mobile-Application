@@ -1,0 +1,1 @@
+export { useNewsFeedScreen } from './useNewsFeedScreen';
