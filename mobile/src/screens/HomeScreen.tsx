@@ -1,4 +1,4 @@
-// src/presentation/screens/HomeScreen.tsx
+// src/screens/HomeScreen.tsx
 import React from 'react';
 import { BottomNavigationTemplate } from '../components/templates/BottomNavigationTemplate';
 
