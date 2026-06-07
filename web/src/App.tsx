@@ -1,55 +1,56 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { AppLayout } from './presentation/components/templates/AppLayout';
+import { AppLayout } from './components/templates/AppLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 import {
-  LoginScreen,
-  RegisterScreen,
-  OtpValidationScreen,
-  WelcomeScreen,
-  NewsFeedScreen,
-  NetworkScreen,
-  ViewProfileScreen,
-  EditProfileScreen,
-  NotificationsScreen,
-  MessagesScreen,
-  ChatScreen,
-  CreatePostScreen,
-  ViewPostScreen,
-  ActivityLogScreen,
-  AddEducationScreen,
-  AddWorkExperienceScreen,
-  AdvancedSettingsScreen,
-} from './presentation/navigation/routes';
+  LoginPage,
+  RegisterPage,
+  OtpValidationPage,
+  WelcomePage,
+  NewsFeedPage,
+  NetworkPage,
+  ViewProfilePage,
+  EditProfilePage,
+  NotificationsPage,
+  MessagesPage,
+  ChatPage,
+  CreatePostPage,
+  ViewPostPage,
+  ActivityLogPage,
+  AddEducationPage,
+  AddWorkExperiencePage,
+  AdvancedSettingsPage,
+} from './navigation/routes';
 
 const App: React.FC = () => {
   return (
     <Routes>
       {/* Auth routes */}
-      <Route path="/welcome" element={<WelcomeScreen />} />
-      <Route path="/login" element={<LoginScreen />} />
-      <Route path="/register" element={<RegisterScreen />} />
-      <Route path="/verify-otp" element={<OtpValidationScreen />} />
+      <Route path="/welcome" element={<WelcomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/verify-otp" element={<OtpValidationPage />} />
 
-      {/* Main app routes */}
-      <Route path="/" element={<AppLayout />}>
+      {/* Protected app routes */}
+      <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
         <Route index element={<Navigate to="/feed" replace />} />
-        <Route path="feed" element={<NewsFeedScreen />} />
-        <Route path="network" element={<NetworkScreen />} />
-        <Route path="create-post" element={<CreatePostScreen />} />
-        <Route path="notifications" element={<NotificationsScreen />} />
-        <Route path="messages" element={<MessagesScreen />} />
-        <Route path="messages/:userId" element={<ChatScreen />} />
-        <Route path="post/:postId" element={<ViewPostScreen />} />
-        <Route path="profile" element={<ViewProfileScreen />} />
-        <Route path="profile/:userId" element={<ViewProfileScreen />} />
-        <Route path="edit-profile" element={<EditProfileScreen />} />
-        <Route path="add-education" element={<AddEducationScreen />} />
-        <Route path="add-work-experience" element={<AddWorkExperienceScreen />} />
-        <Route path="activity-log" element={<ActivityLogScreen />} />
-        <Route path="settings" element={<AdvancedSettingsScreen />} />
+        <Route path="feed" element={<NewsFeedPage />} />
+        <Route path="network" element={<NetworkPage />} />
+        <Route path="create-post" element={<CreatePostPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="messages" element={<MessagesPage />} />
+        <Route path="messages/:userId" element={<ChatPage />} />
+        <Route path="post/:postId" element={<ViewPostPage />} />
+        <Route path="profile" element={<ViewProfilePage />} />
+        <Route path="profile/:userId" element={<ViewProfilePage />} />
+        <Route path="edit-profile" element={<EditProfilePage />} />
+        <Route path="add-education" element={<AddEducationPage />} />
+        <Route path="add-work-experience" element={<AddWorkExperiencePage />} />
+        <Route path="activity-log" element={<ActivityLogPage />} />
+        <Route path="settings" element={<AdvancedSettingsPage />} />
       </Route>
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/feed" replace />} />
+      {/* Default route */}
+      <Route path="*" element={<Navigate to="/welcome" replace />} />
     </Routes>
   );
 };

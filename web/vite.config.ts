@@ -16,7 +16,7 @@ export default defineConfig({
       '@forms': path.resolve(__dirname, '../shared/forms'),
       '@queryClient': path.resolve(__dirname, '../shared/queryClient'),
       '@di': path.resolve(__dirname, '../shared/di'),
-      '@web-presentation': path.resolve(__dirname, './src/presentation'),
+      '@web-src': path.resolve(__dirname, './src'),
     },
     modules: [
       path.resolve(__dirname, 'node_modules'),

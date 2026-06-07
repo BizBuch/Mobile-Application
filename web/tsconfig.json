@@ -17,7 +17,20 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["../shared/domain/*"],
+      "@application/*": ["../shared/application/*"],
+      "@infrastructure/*": ["../shared/infrastructure/*"],
+      "@core/*": ["../shared/core/*"],
+      "@services/*": ["../shared/services/*"],
+      "@forms/*": ["../shared/forms/*"],
+      "@queryClient": ["../shared/queryClient"],
+      "@di": ["../shared/di"],
+      "@web-src/*": ["./src/*"]
+    }
   },
   "include": [
     "src",
